@@ -36,6 +36,7 @@ window.APP_CONFIG = {
     DIRECTIONS: [],            // e.g. ["City"]; empty shows all
     REFRESH_SECONDS: 60,
     MAX_DEPARTURES: 3,
-    ACTIVE_HOURS: [["07:00", "09:00"]]   // only show the bus panel 7–9 am; [] means always
+    ACTIVE_HOURS: [["07:30", "10:30"]],  // only show the bus panel 7:30–10:30 am; [] means all day
+    ACTIVE_DAYS: [1, 2, 3, 4, 5]         // 0 Sun, 1 Mon … 6 Sat; Monday to Friday only; [] means every day
   }
 };

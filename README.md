@@ -47,7 +47,7 @@ PTV requires every request to be signed with your API key, so the key can't be i
    The stops are secrets on purpose: everything in this repo and on the website is public, so the code never shows where Eva travels.
 2. **Edge Functions → Deploy a new function → Via Editor**. Name it exactly `ptv`, paste the contents of `supabase/functions/ptv/index.ts`, and deploy.
 3. Stop IDs can be looked up in `parent.html` with **Find stop**.
-4. Optional, in `js/config.js`: `ROUTES` (e.g. `["200"]`), `DIRECTIONS`, and `ACTIVE_HOURS` so the panel only shows around school times.
+4. Optional, in `js/config.js`: `ROUTES` (e.g. `["200"]`), `DIRECTIONS`, `ACTIVE_HOURS` and `ACTIVE_DAYS` so the panel only shows around school times (currently 7:30–10:30 am, Monday to Friday).
 
 To change a stop or the key later, update the secret in Supabase. Nothing on GitHub changes, and the function picks up new secrets within a minute or so.
 

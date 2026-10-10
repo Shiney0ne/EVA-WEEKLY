@@ -26,8 +26,10 @@ const Bus = (() => {
   }
 
   function activeNow() {
-    if (!B.ACTIVE_HOURS.length) return true;
     const now = new Date();
+    const days = B.ACTIVE_DAYS || [];
+    if (days.length && !days.includes(now.getDay())) return false;
+    if (!B.ACTIVE_HOURS.length) return true;
     const hm = `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
     return B.ACTIVE_HOURS.some(([a, b]) => hm >= a && hm <= b);
   }
