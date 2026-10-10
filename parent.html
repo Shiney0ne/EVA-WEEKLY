@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Parent Portal</title>
+  <link rel="icon" href="images/mascot.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=M+PLUS+Rounded+1c:wght@500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="portal">
+  <div id="loading" class="screen center"><p class="muted">Loading…</p></div>
+
+  <div id="login" class="screen center hidden">
+    <img class="login-mascot" src="images/mascot.svg" alt="">
+    <h1 class="manga-title">Parent portal</h1>
+    <p class="muted">Enter your parent code</p>
+    <div id="keypad"></div>
+    <p id="loginError" class="error-text" role="alert"></p>
+  </div>
+
+  <div id="app" class="screen hidden">
+    <header class="topbar">
+      <div class="hero">
+        <img class="mascot" src="images/mascot.svg" alt="">
+        <div>
+          <div class="greeting">Parent portal</div>
+          <div class="muted">Add lessons and homework for <span id="childName"></span></div>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <button id="addBtn" class="primary">+ Add</button>
+        <button id="findStopBtn" class="ghost">Find stop</button>
+        <button id="logout" class="ghost">Sign out</button>
+      </div>
+    </header>
+
+    <nav class="weeknav">
+      <button id="prev" class="navbtn" aria-label="Previous week">‹</button>
+      <span id="weekLabel" class="weeklabel"></span>
+      <button id="next" class="navbtn" aria-label="Next week">›</button>
+      <button id="thisWeek" class="pill hidden">This week</button>
+      <span id="status" class="status"></span>
+    </nav>
+
+    <main id="week" class="week"></main>
+  </div>
+
+  <dialog id="editor">
+    <form id="form" method="dialog">
+      <h2 id="formTitle">Add</h2>
+      <div class="segmented" role="radiogroup" aria-label="Type">
+        <label><input type="radio" name="kind" value="lesson" checked><span>Lesson</span></label>
+        <label><input type="radio" name="kind" value="homework"><span>Homework</span></label>
+      </div>
+      <label>Subject
+        <input name="subject" list="subjects" placeholder="e.g. Maths, Piano" autocomplete="off">
+      </label>
+      <datalist id="subjects"></datalist>
+      <label>What is it?
+        <input name="title" required placeholder="e.g. Worksheet p. 12">
+      </label>
+      <div class="row">
+        <label><span id="dayLabel">Date</span>
+          <input name="day" type="date" required>
+        </label>
+        <label id="timeField">Time (optional)
+          <input name="start_time" type="time">
+        </label>
+      </div>
+      <label>Notes (optional)
+        <textarea name="details" rows="2"></textarea>
+      </label>
+      <label id="repeatField">Repeat weekly
+        <select name="repeat">
+          <option value="1">Just once</option>
+          <option value="2">For 2 weeks</option>
+          <option value="4">For 4 weeks</option>
+          <option value="8">For 8 weeks</option>
+          <option value="12">For 12 weeks</option>
+        </select>
+      </label>
+      <p id="formError" class="error-text" role="alert"></p>
+      <div class="form-actions">
+        <button type="button" id="deleteBtn" class="danger hidden">Delete</button>
+        <span class="spacer"></span>
+        <button type="button" id="cancelBtn" class="ghost">Cancel</button>
+        <button type="submit" class="primary">Save</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="stopDialog">
+    <form id="stopForm">
+      <h2>Find your stop</h2>
+      <p class="muted" style="margin:0">Search PTV by street or stop name, then save the ID in Supabase as the secret <code>PTV_STOP_ID</code> (or <code>PTV_DEST_STOP_ID</code>).</p>
+      <div class="row">
+        <label>Search
+          <input name="term" required minlength="3" placeholder="e.g. Smith St">
+        </label>
+        <label>Type
+          <select name="route_type">
+            <option value="2">Bus</option>
+            <option value="1">Tram</option>
+            <option value="0">Train</option>
+            <option value="3">V/Line</option>
+          </select>
+        </label>
+      </div>
+      <ul id="stopResults" class="stop-results"></ul>
+      <p id="stopError" class="error-text" role="alert"></p>
+      <div class="form-actions">
+        <span class="spacer"></span>
+        <button type="button" id="stopClose" class="ghost">Close</button>
+        <button type="submit" class="primary">Search</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div id="demoBanner" class="demo-banner hidden">Demo mode: data is saved in this browser only. Parent code 111111.</div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/parent.js"></script>
+</body>
+</html>

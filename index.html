@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="robots" content="noindex">
+  <title>Eva's Week</title>
+  <link rel="icon" href="images/mascot.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=M+PLUS+Rounded+1c:wght@500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="kiosk">
+  <div id="loading" class="screen center"><p class="muted">Loading…</p></div>
+
+  <div id="login" class="screen center hidden">
+    <img class="login-mascot" src="images/mascot.svg" alt="">
+    <h1 id="loginHello" class="manga-title">Hi!</h1>
+    <p class="muted">Enter your secret code</p>
+    <div id="keypad"></div>
+    <p id="loginError" class="error-text" role="alert"></p>
+  </div>
+
+  <div id="app" class="screen hidden">
+    <header class="topbar">
+      <div class="hero">
+        <img id="mascot" class="mascot" alt="">
+        <div class="bubble">
+          <div id="greeting" class="greeting"></div>
+          <div id="message" class="message"></div>
+        </div>
+      </div>
+      <div id="bus" class="bus panel hidden" aria-live="polite"></div>
+      <div class="clock-panel panel" id="clockPanel" title="Hold for 3 seconds to sign out">
+        <div id="clock" class="clock"></div>
+        <div id="todayLabel" class="today-label"></div>
+      </div>
+    </header>
+
+    <nav class="weeknav">
+      <button id="prev" class="navbtn" aria-label="Previous week">‹</button>
+      <span id="weekLabel" class="weeklabel"></span>
+      <button id="next" class="navbtn" aria-label="Next week">›</button>
+      <button id="thisWeek" class="pill hidden">Back to this week</button>
+      <span id="status" class="status"></span>
+    </nav>
+
+    <main id="week" class="week"></main>
+  </div>
+
+  <div id="burst" class="burst" aria-hidden="true">SUGOI!</div>
+  <div id="demoBanner" class="demo-banner hidden">Demo mode: data is saved in this browser only. Child code 222222.</div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/bus.js"></script>
+  <script src="js/kiosk.js"></script>
+</body>
+</html>
