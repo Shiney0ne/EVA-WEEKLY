@@ -155,7 +155,8 @@
       $("status").textContent = "";
     } catch (err) {
       console.error(err);
-      $("status").textContent = "Offline: showing the last saved view";
+      if (err.signedOut) { await Store.logout(); return location.reload(); }
+      $("status").textContent = navigator.onLine === false ? "Offline: showing the last saved view" : err.message;
     }
     render();
   }

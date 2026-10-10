@@ -46,6 +46,7 @@
       $("status").textContent = "";
     } catch (err) {
       console.error(err);
+      if (err.signedOut) { await Store.logout(); return location.reload(); }
       $("status").textContent = "Couldn't load: " + err.message;
     }
     render();

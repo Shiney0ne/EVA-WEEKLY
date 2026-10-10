@@ -28,6 +28,20 @@ const Store = (() => {
     ]);
   }
 
+  // ---------- Supabase helpers ----------
+  async function requireSession() {
+    const { data: { session } } = await sb.auth.getSession();
+    if (!session) throw Object.assign(new Error("You've been signed out. Please enter your code again."), { signedOut: true });
+  }
+  // Turn database errors into plain words
+  function dbError(error) {
+    const msg = error.message || String(error);
+    if (/entries_kind_check/.test(msg)) return new Error("The database doesn't accept events yet. Run supabase/add-events.sql in Supabase.");
+    if (/row-level security|permission denied/i.test(msg)) return new Error("This login isn't allowed to do that. Check its app_roles row in Supabase.");
+    if (/JWT|token/i.test(msg)) return Object.assign(new Error("You've been signed out. Please enter your code again."), { signedOut: true });
+    return new Error(msg);
+  }
+
   return {
     demo,
 
@@ -68,8 +82,10 @@ const Store = (() => {
 
     async listRange(fromIso, toIso) {
       if (demo) return U.sortEntries(dLoad().filter((e) => e.day >= fromIso && e.day <= toIso));
+      // Without a session the database returns an empty list rather than an error, so check first
+      await requireSession();
       const { data, error } = await sb.from("entries").select("*").gte("day", fromIso).lte("day", toIso);
-      if (error) throw error;
+      if (error) throw dbError(error);
       return U.sortEntries(data);
     },
 
@@ -81,20 +97,28 @@ const Store = (() => {
 
     async add(entries) {
       if (demo) { dSave(dLoad().concat(entries.map((e) => ({ id: uid(), done: false, ...e })))); return; }
-      const { error } = await sb.from("entries").insert(entries);
-      if (error) throw error;
+      await requireSession();
+      // Ask for the new rows back, so a save that this login can't see afterwards is reported
+      const { data, error } = await sb.from("entries").insert(entries).select("id");
+      if (error) throw dbError(error);
+      if (!data || data.length !== entries.length) throw new Error("Saved, but this login can't read it back. Check the parent's app_roles row in Supabase.");
     },
 
     async update(id, patch) {
       if (demo) { dSave(dLoad().map((e) => (e.id === id ? { ...e, ...patch } : e))); return; }
-      const { error } = await sb.from("entries").update(patch).eq("id", id);
-      if (error) throw error;
+      await requireSession();
+      // A blocked update changes 0 rows without an error, so check the row count
+      const { data, error } = await sb.from("entries").update(patch).eq("id", id).select("id");
+      if (error) throw dbError(error);
+      if (!data || !data.length) throw new Error("Nothing was changed. This login may not have permission (check app_roles).");
     },
 
     async remove(id) {
       if (demo) { dSave(dLoad().filter((e) => e.id !== id)); return; }
-      const { error } = await sb.from("entries").delete().eq("id", id);
-      if (error) throw error;
+      await requireSession();
+      const { data, error } = await sb.from("entries").delete().eq("id", id).select("id");
+      if (error) throw dbError(error);
+      if (!data || !data.length) throw new Error("Nothing was deleted. This login may not have permission (check app_roles).");
     },
 
     // Calls a Supabase Edge Function as the signed-in user

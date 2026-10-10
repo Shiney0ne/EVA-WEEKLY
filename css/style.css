@@ -118,6 +118,7 @@ body.kiosk #app { height: 100vh; height: 100dvh; display: flex; flex-direction: 
 .danger { color: var(--danger); }
 .pill { background: var(--sakura-soft); }
 .status { color: var(--danger); font-weight: 700; font-size: 14px; }
+.status:not(:empty) { background: #ffe3e3; border: 2px solid var(--danger); border-radius: 8px; padding: 4px 10px; }
 
 /* ---------- Week grid ---------- */
 .week { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 12px; }
