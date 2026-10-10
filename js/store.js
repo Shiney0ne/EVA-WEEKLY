@@ -125,7 +125,15 @@ const Store = (() => {
     async invoke(name, body) {
       if (demo) throw new Error("Not available in demo mode");
       const { data, error } = await sb.functions.invoke(name, { body });
-      if (error) throw error;
+      if (error) {
+        // The real reason is in the response body; supabase-js only says "non-2xx status code"
+        let reason = "";
+        try { const res = await error.context.json(); reason = res.error || res.message || ""; } catch {}
+        const status = error.context?.status;
+        if (status === 404 || /not found/i.test(reason)) throw new Error(`The "${name}" function isn't deployed in Supabase. Deploy it with exactly that name.`);
+        if (!status) throw new Error(`Couldn't reach the "${name}" function. Check it's deployed in Supabase with exactly that name.`);
+        throw new Error(reason || `The "${name}" function failed (${status}). See Supabase → Edge Functions → ${name} → Logs.`);
+      }
       if (data?.error) throw new Error(data.error);
       return data;
     },

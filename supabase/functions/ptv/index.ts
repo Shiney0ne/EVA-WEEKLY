@@ -13,8 +13,9 @@ const json = (body: unknown, status = 200) =>
 
 // PTV signature: HMAC-SHA1 of the path + query (including devid), keyed with the API key
 async function ptv(path: string) {
-  const devId = Deno.env.get("PTV_DEV_ID");
-  const key = Deno.env.get("PTV_API_KEY");
+  // Trim in case a space or line break was pasted along with the secret
+  const devId = Deno.env.get("PTV_DEV_ID")?.trim();
+  const key = Deno.env.get("PTV_API_KEY")?.trim();
   if (!devId || !key) throw new Error("PTV_DEV_ID / PTV_API_KEY secrets are not set");
   const request = `${path}${path.includes("?") ? "&" : "?"}devid=${encodeURIComponent(devId)}`;
   const enc = new TextEncoder();
@@ -54,7 +55,7 @@ Deno.serve(async (req) => {
     // The stops are secrets too, so the public site never reveals where Eva catches the bus
     const stopId = Number(Deno.env.get("PTV_STOP_ID"));
     const destId = Number(Deno.env.get("PTV_DEST_STOP_ID"));
-    const destName = Deno.env.get("PTV_DEST_NAME") ?? "";
+    const destName = Deno.env.get("PTV_DEST_NAME")?.trim() ?? "";
     const stopType = Number(Deno.env.get("PTV_ROUTE_TYPE") ?? 2);
     if (!Number.isInteger(stopId) || stopId <= 0) return json({ error: "PTV_STOP_ID secret is not set" }, 500);
     const max = Math.min(Math.max(Number(body.max_results) || 3, 1), 10);
