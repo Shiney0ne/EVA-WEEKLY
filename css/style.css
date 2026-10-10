@@ -10,6 +10,8 @@
   --lesson-bg: #e3f5ff;
   --homework: #ffb800;
   --homework-bg: #fff6d1;
+  --event: #ff6a3d;
+  --event-bg: #ffe8de;
   --done: #22a35a;
   --done-bg: #e6f7ec;
   --stamp: #e8333a;
@@ -102,7 +104,7 @@ body.kiosk #app { height: 100vh; height: 100dvh; display: flex; flex-direction: 
 .bus.error { color: var(--muted); }
 
 /* Week navigation */
-.weeknav { display: flex; align-items: center; gap: 12px; }
+.weeknav { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
 .weeklabel { font-family: var(--title-font); font-size: 26px; letter-spacing: .04em; min-width: 220px; text-align: center; }
 .navbtn {
   width: 42px; height: 42px; border-radius: 50%; border: var(--border); background: var(--paper); box-shadow: var(--pop-sm);
@@ -115,7 +117,7 @@ body.kiosk #app { height: 100vh; height: 100dvh; display: flex; flex-direction: 
 .primary { background: var(--sakura); color: #fff; }
 .danger { color: var(--danger); }
 .pill { background: var(--sakura-soft); }
-.status { margin-left: auto; color: var(--danger); font-weight: 700; font-size: 14px; }
+.status { color: var(--danger); font-weight: 700; font-size: 14px; }
 
 /* ---------- Week grid ---------- */
 .week { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 12px; }
@@ -168,6 +170,7 @@ body.kiosk .week { flex: 1; min-height: 0; }
 button.item:active { transform: translate(2px, 2px); box-shadow: none; }
 .item.lesson { background: var(--lesson-bg); }
 .item.homework { background: var(--homework-bg); }
+.item.event { background: var(--event-bg); }
 .item.done { background: var(--done-bg); }
 .item.done .title, .item.done .subject, .item.done .details { text-decoration: line-through; opacity: .6; }
 .item-body { display: block; min-width: 0; }
@@ -176,6 +179,7 @@ button.item:active { transform: translate(2px, 2px); box-shadow: none; }
   padding: 0 6px; border-radius: 4px; color: #fff; background: var(--sky);
 }
 .homework .tag { background: var(--ink); color: var(--homework); }
+.event .tag { background: var(--event); }
 .done .tag { background: var(--done); color: #fff; }
 .subject { font-size: 17px; font-weight: 800; margin-top: 2px; line-height: 1.2; }
 .title { overflow-wrap: anywhere; font-size: 15px; }
@@ -220,6 +224,61 @@ button.item:active { transform: translate(2px, 2px); box-shadow: none; }
   text-align: center; padding: 3px 12px; font-size: 13px; font-weight: 700; z-index: 40;
 }
 
+/* ---------- Kiosk: view switch and filters ---------- */
+.filters { display: flex; gap: 8px; margin-left: auto; }
+.chip {
+  border: var(--border); border-radius: 999px; padding: 6px 14px; font-weight: 800; font-size: 15px;
+  box-shadow: var(--pop-sm); background: #fff;
+}
+.chip.lesson[aria-pressed="true"] { background: var(--lesson-bg); }
+.chip.homework[aria-pressed="true"] { background: var(--homework-bg); }
+.chip.event[aria-pressed="true"] { background: var(--event-bg); }
+.chip[aria-pressed="false"] { border-style: dashed; box-shadow: none; opacity: .5; text-decoration: line-through; }
+.chip:active { transform: translate(2px, 2px); box-shadow: none; }
+.viewswitch { display: flex; border: var(--border); border-radius: 999px; overflow: hidden; box-shadow: var(--pop-sm); }
+.viewswitch button { border: 0; background: #fff; padding: 6px 18px; font-family: var(--title-font); font-size: 20px; letter-spacing: .05em; }
+.viewswitch button + button { border-left: var(--border); }
+.viewswitch button[aria-pressed="true"] { background: var(--ink); color: #fff; }
+
+/* Week view: tap a day to zoom in */
+.week .day[data-day] { cursor: pointer; }
+button.day-head { width: 100%; border: 0; text-align: left; font: inherit; cursor: pointer; }
+.zoom { font-size: 15px; opacity: .7; margin-left: 2px; }
+
+/* ---------- Kiosk: single-day view ---------- */
+body.kiosk .dayview-wrap { flex: 1; min-height: 0; display: flex; }
+.dayview { flex: 1; }
+.dayview .day-head { padding: 10px 16px; gap: 12px; }
+.dayview .kanji { font-size: 34px; }
+.dayview .dow { font-size: 36px; }
+.dayview .date { margin-left: 0; font-size: 20px; }
+.dayview .today-badge { top: 70px; right: 10px; font-size: 22px; }
+.back-week {
+  margin-left: auto; border: 2px solid #fff; background: transparent; color: #fff; border-radius: 999px;
+  padding: 6px 16px; font-weight: 800; font-size: 16px;
+}
+.back-week:active { background: rgba(255, 255, 255, .2); }
+.dayview-cols { flex: 1; min-height: 0; display: grid; gap: 18px; padding: 16px 20px; }
+.dayview-col { display: flex; flex-direction: column; min-height: 0; }
+.dayview-col .items { padding: 4px 6px 10px 0; gap: 14px; background: none !important; }
+.col-title {
+  margin: 0 0 10px; font-family: var(--title-font); font-weight: 400; font-size: 28px; letter-spacing: .05em;
+  border-bottom: 4px solid var(--sky);
+}
+.col-title.homework { border-color: var(--homework); }
+.col-title.event { border-color: var(--event); }
+.item.big { padding: 14px 16px; gap: 14px; border-width: 3px; box-shadow: var(--pop); }
+.item.big .tag { font-size: 14px; padding: 1px 8px; }
+.item.big .subject { font-size: 28px; }
+.item.big .title { font-size: 21px; }
+.item.big .details { font-size: 17px; margin-top: 4px; }
+.item.big .check { width: 40px; height: 40px; font-size: 24px; border-width: 3px; }
+.item.big .stamp { font-size: 30px; right: 14px; bottom: 10px; }
+.dayview-empty { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; text-align: center; }
+.dayview-empty img { width: 170px; }
+.dayview-empty span { font-family: var(--title-font); font-size: 44px; letter-spacing: .05em; }
+.dayview-empty small { font-size: 18px; font-weight: 700; color: var(--muted); }
+
 /* ---------- Parent portal ---------- */
 body.portal .greeting { font-size: 32px; }
 body.portal .topbar { align-items: center; margin-bottom: 14px; }
@@ -245,7 +304,7 @@ dialog input, dialog select, dialog textarea {
   border: 2px solid var(--ink); border-radius: 8px; padding: 9px 12px; background: #fff; font-weight: 500;
 }
 dialog .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.segmented { display: grid; grid-template-columns: 1fr 1fr; border: 2px solid var(--ink); border-radius: 10px; overflow: hidden; }
+.segmented { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; border: 2px solid var(--ink); border-radius: 10px; overflow: hidden; }
 .segmented label { cursor: pointer; }
 .segmented input { position: absolute; opacity: 0; }
 .segmented span { display: block; text-align: center; padding: 8px; font-weight: 800; background: #fff; }

@@ -43,11 +43,21 @@ const U = {
   esc(s) {
     return String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   },
-  // Lessons first (by time), then homework
+  KINDS: {
+    lesson: { label: "Lessons", icon: "📚" },
+    event: { label: "Events", icon: "⭐" },
+    homework: { label: "Homework", icon: "✏️" }
+  },
+  tagText(e) {
+    const t = e.start_time ? " · " + U.fmtTime(e.start_time) : "";
+    return e.kind === "lesson" ? "Lesson" + t : e.kind === "event" ? "Event" + t : "Homework due";
+  },
+  // Lessons, then events (each by time), then homework
   sortEntries(list) {
+    const rank = { lesson: 0, event: 1, homework: 2 };
     return list.slice().sort((a, b) =>
       a.day.localeCompare(b.day) ||
-      (a.kind === b.kind ? 0 : a.kind === "lesson" ? -1 : 1) ||
+      (rank[a.kind] ?? 3) - (rank[b.kind] ?? 3) ||
       (a.start_time || "99").localeCompare(b.start_time || "99") ||
       (a.subject || "").localeCompare(b.subject || ""));
   },

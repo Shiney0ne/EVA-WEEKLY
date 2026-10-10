@@ -1,11 +1,11 @@
 # Eva's Week: manga-style kiosk homework calendar
 
-A 7-day landscape calendar for Eva's tablet, plus a parent portal for adding lessons and homework, with live PTV departures.
+A 7-day landscape calendar for Eva's tablet, plus a parent portal for adding lessons, homework and events, with live PTV departures.
 
 | Page | Who | What |
 |---|---|---|
-| `index.html` | Eva (kiosk tablet) | Mon–Sun with today highlighted, weekends in lavender, live PTV times. Tap homework to stamp it DONE! |
-| `parent.html` | Parent (any device) | Add, edit, delete and repeat lessons and homework. Find PTV stop IDs. |
+| `index.html` | Eva (kiosk tablet) | Mon–Sun with today highlighted, weekends in lavender, live PTV times. Tap a day to see just that day; buttons hide lessons, homework or events. Tap homework to stamp it DONE! |
+| `parent.html` | Parent (any device) | Add, edit, delete and repeat lessons, homework and events. Find PTV stop IDs. |
 
 The site is static and hosted on **GitHub Pages**. Logins, data and the PTV keys are held in **Supabase** (free tier).
 
@@ -26,6 +26,8 @@ Parent code `111111`, Eva's code `222222`.
 6. **Project Settings → API**: copy the Project URL and the `anon` (or publishable) key into `js/config.js`.
 
 The anon key is designed to be public. The database rules mean only the parent login can add or change entries; Eva's login can only read and tick homework done.
+
+**Already set up before events were added?** Run `supabase/add-events.sql` once in the SQL Editor. Until then, saving an event shows an error.
 
 ## 2. PTV keys: stored as Supabase secrets, never in the code
 
@@ -73,7 +75,9 @@ A free GitHub Pages site must come from a public repo. The code is visible, but 
   - **iPad:** turn on Rotation Lock in landscape, then Settings → Accessibility → Guided Access with Safari on the page.
 - Sign in once with Eva's code. The login is remembered.
 - To sign out on the tablet, **press and hold the clock for 3 seconds**.
-- The page refreshes every 2 minutes, returns to the current week after 90 seconds untouched, and moves to the new day at midnight.
+- **Day / Week** buttons switch between one big day and the whole week. Tapping a day in the week opens it; the arrows (or a swipe) move a day or a week at a time.
+- **Lessons / Homework / Events** buttons show or hide each kind. The tablet remembers Eva's choices.
+- The page refreshes every 2 minutes, returns to today after 90 seconds untouched (keeping the chosen view), and moves to the new day at midnight.
 
 ## Personalising
 

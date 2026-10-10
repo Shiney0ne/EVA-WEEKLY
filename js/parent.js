@@ -1,4 +1,4 @@
-// Parent portal: add, edit and delete lessons and homework
+// Parent portal: add, edit and delete lessons, homework and events
 (() => {
   let weekStart = U.currentWeek();
   let entries = [];
@@ -29,7 +29,7 @@
         <div class="items">
           ${list.map((e) => `<button class="item ${e.kind} ${e.done ? "done" : ""}" data-id="${e.id}">
             <span class="item-body">
-              <div class="tag">${e.kind === "lesson" ? `Lesson${e.start_time ? " · " + U.fmtTime(e.start_time) : ""}` : `Homework${e.done ? " · done ✓" : ""}`}</div>
+              <div class="tag">${e.kind === "homework" ? `Homework${e.done ? " · done ✓" : ""}` : U.tagText(e)}</div>
               ${e.subject ? `<div class="subject">${U.esc(e.subject)}</div>` : ""}
               <div class="title">${U.esc(e.title)}</div>
             </span></button>`).join("")}
@@ -84,7 +84,7 @@
       subject: form.subject.value.trim(),
       title: form.title.value.trim(),
       day: form.day.value,
-      start_time: kind === "lesson" && form.start_time.value ? form.start_time.value : null,
+      start_time: kind !== "homework" && form.start_time.value ? form.start_time.value : null,
       details: form.details.value.trim()
     };
     if (!data.title || !data.day) return;

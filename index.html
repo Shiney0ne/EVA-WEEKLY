@@ -41,11 +41,20 @@
     </header>
 
     <nav class="weeknav">
-      <button id="prev" class="navbtn" aria-label="Previous week">‹</button>
+      <button id="prev" class="navbtn" aria-label="Previous">‹</button>
       <span id="weekLabel" class="weeklabel"></span>
-      <button id="next" class="navbtn" aria-label="Next week">›</button>
-      <button id="thisWeek" class="pill hidden">Back to this week</button>
+      <button id="next" class="navbtn" aria-label="Next">›</button>
+      <button id="thisWeek" class="pill hidden">Back to today</button>
       <span id="status" class="status"></span>
+      <div class="filters" role="group" aria-label="What to show">
+        <button class="chip lesson" data-kind="lesson" aria-pressed="true">📚 Lessons</button>
+        <button class="chip homework" data-kind="homework" aria-pressed="true">✏️ Homework</button>
+        <button class="chip event" data-kind="event" aria-pressed="true">⭐ Events</button>
+      </div>
+      <div class="viewswitch" role="group" aria-label="View">
+        <button data-view="day" aria-pressed="false">Day</button>
+        <button data-view="week" aria-pressed="true">Week</button>
+      </div>
     </nav>
 
     <main id="week" class="week"></main>

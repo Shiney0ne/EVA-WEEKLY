@@ -20,8 +20,9 @@ window.APP_CONFIG = {
   MASCOT_SLEEPING: "images/mascot-sleep.svg",
 
   SHOW_WEEKENDS: true,
+  DEFAULT_VIEW: "week",        // "week" or "day" (Eva can switch; the tablet remembers her choice)
   REFRESH_MINUTES: 2,          // how often the kiosk reloads the calendar
-  IDLE_RETURN_SECONDS: 90,     // kiosk jumps back to this week after no touches
+  IDLE_RETURN_SECONDS: 90,     // kiosk jumps back to today after no touches
 
   // Codes used only in DEMO mode
   DEMO_CODES: { parent: "111111", child: "222222" },

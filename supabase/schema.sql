@@ -14,7 +14,7 @@ create policy "read own role" on public.app_roles
 create table if not exists public.entries (
   id uuid primary key default gen_random_uuid(),
   day date not null,
-  kind text not null check (kind in ('lesson', 'homework')),
+  kind text not null constraint entries_kind_check check (kind in ('lesson', 'homework', 'event')),
   subject text not null default '',
   title text not null,
   details text not null default '',

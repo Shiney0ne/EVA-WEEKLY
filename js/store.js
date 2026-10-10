@@ -22,7 +22,9 @@ const Store = (() => {
       { id: uid(), day: d(1), kind: "homework", subject: "Math", title: "Fractions worksheet p. 12", details: "Show your working", start_time: null, done: false },
       { id: uid(), day: d(2), kind: "lesson", subject: "Swimming", title: "Bring goggles", details: "", start_time: "17:30", done: false },
       { id: uid(), day: d(3), kind: "homework", subject: "Reading", title: "Chapter 4 of class book", details: "", start_time: null, done: false },
-      { id: uid(), day: d(4), kind: "homework", subject: "Science", title: "Plant diary entry", details: "", start_time: null, done: false }
+      { id: uid(), day: d(4), kind: "homework", subject: "Science", title: "Plant diary entry", details: "", start_time: null, done: false },
+      { id: uid(), day: d(2), kind: "event", subject: "School", title: "Book Week dress-up", details: "Wear your costume", start_time: null, done: false },
+      { id: uid(), day: d(5), kind: "event", subject: "Party", title: "Mia's birthday party", details: "Bring the present", start_time: "14:00", done: false }
     ]);
   }
 
