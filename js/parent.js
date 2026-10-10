@@ -113,7 +113,7 @@
     $("stopError").textContent = "";
     out.innerHTML = "<li>Searching…</li>";
     try {
-      const { stops } = await Store.invoke("ptv", { action: "search", term: f.term.value, route_type: Number(f.route_type.value) });
+      const { stops } = await Store.invoke(APP_CONFIG.PTV_FUNCTION, { action: "search", term: f.term.value, route_type: Number(f.route_type.value) });
       out.innerHTML = stops.length
         ? stops.map((s) => `<li><span>${U.esc(s.name)}<br><small class="muted">${U.esc(s.suburb)}</small></span><span>ID <code>${s.id}</code></span></li>`).join("")
         : "<li>No stops found</li>";

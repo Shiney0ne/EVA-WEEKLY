@@ -19,7 +19,7 @@ const Bus = (() => {
       ];
     }
     // The stops themselves are Supabase secrets, read by the function
-    const data = await Store.invoke("ptv", { max_results: 5 });
+    const data = await Store.invoke(APP_CONFIG.PTV_FUNCTION, { max_results: 5 });
     destName = data.dest_name || "";
     icon = ICONS[data.route_type] || "🚌";
     return data.departures || [];

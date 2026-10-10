@@ -30,6 +30,9 @@ window.APP_CONFIG = {
   // Live departures from PTV (Victoria).
   // The stops are NOT set here: this file is public. They are Supabase secrets
   // (PTV_STOP_ID, PTV_DEST_STOP_ID, PTV_DEST_NAME); see README.
+  // Name of the Supabase Edge Function that signs PTV requests (case-sensitive)
+  PTV_FUNCTION: "PTV",
+
   BUS: {
     ENABLED: true,
     ROUTES: [],                // route numbers to show, e.g. ["200", "207"]; empty shows all
